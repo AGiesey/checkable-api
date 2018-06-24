@@ -7,6 +7,9 @@ by Adam Giesey (adamgiesey@gmail.com)
 ## install
 `npm install`
 
+## start MongoDB
+`mongod`
+
 ## start the app
 `npm start`
 
