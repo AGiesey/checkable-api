@@ -16,12 +16,27 @@ router.get('/findAllForUser/:userId', function(req, res) {
   else {
     checklistsService.findByUserId(userId)
       .then(checklists => {
+
         res.send(JSON.stringify(checklists));
       }, err => {
         res.status(406).send(err)
       });
   }
 })
+
+router.get('/findById/:checklistId', function(req, res) {
+  var checklistId = req.params.checklistId;
+
+  if (!checklistId) {
+    res.status(406).send('Missing Checklist ID');
+  } else {
+    checklistsService.findById(checklistId).then(checklist => {
+      res.send(JSON.stringify(checklist));
+    }, err => {
+      res.status(406).send(err)
+    })
+  }
+}) 
 
 /* POST */
 router.post('/createNewChecklist', function(req, res) {
@@ -42,6 +57,12 @@ router.put('/updateChecklist', function(req, res) {
   else {
     res.send(JSON.stringify(checklistsService.updateChecklist(checklist)));
   }
+})
+
+router.delete('/:checklistId', function(req, res) {
+  const checklistId = req.params.checklistId;
+  if (checklistId)
+    res.send(JSON.stringify(checklistsService.deleteChecklist(checklistId)))
 })
 
 module.exports = router;
