@@ -36,6 +36,10 @@ let usersService = {
             err ? deferred.reject(err) : deferred.resolve(numAffected);
         })
         return deferred.promise;
+    },
+
+    testTesting: function(a, b) {
+        return a + b;
     }
 
 }
