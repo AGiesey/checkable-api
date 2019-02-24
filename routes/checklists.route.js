@@ -62,7 +62,7 @@ router.put('/:checklistId/updateChecklistName/:name', (req, res) => {
     })
 })
 
-router.post('/:checklistId/updateCHecklistStatus/:status', (req, res) => {
+router.put('/:checklistId/updateChecklistStatus/:status', (req, res) => {
   const checklistId = req.params.checklistId;
   const status = checklistStatus[req.params.status];
 

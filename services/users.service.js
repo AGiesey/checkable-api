@@ -4,19 +4,19 @@ const User = require('../models/user.model');
 let usersService = {
     // CREATE
     createNewUser: async function(options) {
-        
-        const existingUsers = await User.find({ email: userEmail })
+        const { email, givenName, surName, password } = options;
+        const existingUsers = await User.find({ email: email })
 
         // TODO ensure this is working.
-        if (existingUsers) {
+        if (existingUsers && existingUsers.length > 0) {
             throw Error('User already exists');
         }
 
         let user = new User({
-            givenName: options.givenName,
-            surName: options.surName,
-            password: options.password,
-            email: options.email
+            givenName: givenName,
+            surName: surName,
+            password: password,
+            email: email
         })
         let newUser = await user.save();
 
