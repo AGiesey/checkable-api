@@ -5,11 +5,13 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
 
 const indexRouter = require('./routes/index.route');
 const usersRouter = require('./routes/users.route');
 const checklistsRouter = require('./routes/checklists.route');
 const checklistItemsRouter = require('./routes/checklist-item.route');
+const loginRouter = require('./routes/login.route')
 
 const app = express();
 
@@ -25,17 +27,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//TODO: read about cors, make sure this is correct and add authentication.
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+// TODO: Currently allowing all access through cors, I want to whitelist the client eventually
+app.use(cors());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/checklists', checklistsRouter);
 app.use('/checklistItems', checklistItemsRouter);
+app.use('/login', loginRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

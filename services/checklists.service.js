@@ -26,7 +26,7 @@ let checklistsService = {
   },
 
   findById: function(checklistId) {
-    return Checklist.find({ _id: checklistId }, (err, checklist) => {
+    return Checklist.findById(checklistId, (err, checklist) => {
       if (err) {
         console.error(error);
       }
@@ -35,13 +35,34 @@ let checklistsService = {
   },
 
   // UPDATE
-  updateChecklist: async function(updatedChecklist) {
-    const conditions = { _id: updatedChecklist._id }
-    
-    return await Checklist.update(conditions, updatedChecklist, {}, function(err, numAffected) {
-        return err || numAffected;
-    });
+  updateChecklistName: async function(checklistId, name) {
+    const checklist = await Checklist.findById(checklistId);
+
+    if (!checklist) {
+      return false;
+    }
+
+    checklist.name = name;
+    return await checklist.save();
   },
+
+  updateChecklistStatus: async function(checklistId, status) {
+    const checklist = await Checklist.findById(checklistId);
+
+    if (!checklist) {
+      return false;
+    }
+
+    checklist.status = status;
+    return await checklist.save();
+  },
+  // updateChecklist: async function(updatedChecklist) {
+  //   const conditions = { _id: updatedChecklist._id }
+    
+  //   return await Checklist.update(conditions, updatedChecklist, {}, function(err, numAffected) {
+  //       return err || numAffected;
+  //   });
+  // },
 
   // DELETE
   deleteChecklist: async function(checklistId) {

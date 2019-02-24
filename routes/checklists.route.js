@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const checklistsService = require('../services/checklists.service');
+const checklistStatus = require('../objects/checklist-status').ChecklistStatus;
 
 /* GET */
 router.get('/', function(req, res) {
@@ -49,15 +50,38 @@ router.post('/createNewChecklist', function(req, res) {
 })
 
 /* PUT */
-router.put('/updateChecklist', function(req, res) {
-  const checklist = req.body
-  if (!checklist._id) {
-    res.status(406).send("Unable to update checklist")
-  }
-  else {
-    res.send(JSON.stringify(checklistsService.updateChecklist(checklist)));
-  }
+router.put('/:checklistId/updateChecklistName/:name', (req, res) => {
+  const checklistId = req.params.checklistId;
+  const name = req.params.name;
+
+  checklistsService.updateChecklistName(checklistId, name)
+    .then(checklist => {
+      res.send(JSON.stringify(checklist))
+    }, error => {
+      res.status(500).send(error);
+    })
 })
+
+router.post('/:checklistId/updateCHecklistStatus/:status', (req, res) => {
+  const checklistId = req.params.checklistId;
+  const status = checklistStatus[req.params.status];
+
+  checklistsService.updateChecklistStatus(checklistId, status)
+    .then(checklist => {
+      res.send(JSON.stringify(checklist))
+    }, error => {
+      res.status(500).send(error)
+    })
+})
+// router.put('/updateChecklist', function(req, res) {
+//   const checklist = req.body
+//   if (!checklist._id) {
+//     res.status(406).send("Unable to update checklist")
+//   }
+//   else {
+//     res.send(JSON.stringify(checklistsService.updateChecklist(checklist)));
+//   }
+// })
 
 router.delete('/:checklistId', function(req, res) {
   const checklistId = req.params.checklistId;

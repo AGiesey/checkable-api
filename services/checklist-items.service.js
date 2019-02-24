@@ -5,7 +5,7 @@ const ChecklistStatus = require('../objects/checklist-status');
 let checklistItemsService = {
   
   createNewChecklistItem: async function(checklistId, item) {
-    const checklist = getChecklist(checklistId);
+    const checklist = await getChecklist(checklistId);
 
     if (checklist) {
       const newItem = new ChecklistItem({
@@ -61,19 +61,9 @@ let checklistItemsService = {
       return null;
     }
 
-    console.log('BEFORE', checklist.items.length);
     checklist.items.pull(itemId);
-    console.log('AFTER', checklist.items.length);
-    
+
     return await checklist.save();
-    
-    // const item = checklist.items.id(itemId);
-
-    // if (!item) {
-    //   return null;
-    // }
-
-
   }
 }
 
