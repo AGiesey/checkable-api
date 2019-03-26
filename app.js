@@ -12,6 +12,7 @@ const usersRouter = require('./routes/users.route');
 const checklistsRouter = require('./routes/checklists.route');
 const checklistItemsRouter = require('./routes/checklist-item.route');
 const loginRouter = require('./routes/login.route')
+const collaborationRouter = require('./routes/collaboration.route');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use('/users', usersRouter);
 app.use('/checklists', checklistsRouter);
 app.use('/checklistItems', checklistItemsRouter);
 app.use('/login', loginRouter);
+app.use('/collaboration', collaborationRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

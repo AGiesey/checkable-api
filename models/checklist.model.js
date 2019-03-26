@@ -9,12 +9,14 @@ const Schema = mongoose.Schema;
 const checklistItemSchema = new Schema({
     name: {type: String, required: true},
     status: {type: ChecklistItemStatus, default: ChecklistItemStatus.NOT_STARTED },
+    assignedTo: {type: Schema.ObjectId, ref: 'User'}
 }, {timestamps: true}); 
 
 const checklistSchema = new Schema({
     name: {type: String, required: true},
-    ownerId: {type: Schema.ObjectId, ref: 'Checklist', required: true},
+    ownerId: {type: Schema.ObjectId, ref: 'User', required: true},
     status: {type: ChecklistStatus, default: ChecklistStatus.NOT_STARTED },
+    collaborators: {type: [Schema.ObjectId], ref: 'User', default: []},
     items: [checklistItemSchema]
 }, {timestamps: true}); 
 
