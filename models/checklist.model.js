@@ -16,7 +16,7 @@ const checklistSchema = new Schema({
     name: {type: String, required: true},
     ownerId: {type: Schema.ObjectId, ref: 'User', required: true},
     status: {type: ChecklistStatus, default: ChecklistStatus.NOT_STARTED },
-    collaborators: {type: [Schema.ObjectId], ref: 'User', default: []},
+    collaboratorIds: {type: [Schema.ObjectId], ref: 'User'},
     items: [checklistItemSchema]
 }, {timestamps: true}); 
 

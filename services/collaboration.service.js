@@ -13,7 +13,7 @@ let collaborationService = {
   },
 
   getCollaborationByBoth: async function(userId, collaboratorId) {
-    return await Collaboration.find({userId: userId, collaboratorId: collaboratorId});
+    return await Collaboration.findOne({userId: userId, collaboratorId: collaboratorId});
   },
 
   // CREATE
@@ -41,16 +41,14 @@ let collaborationService = {
   },
 
   // UPDATE
-  setCollaborationStatus: async function(collaboratorId, status) {
-    const collaborations = await Collaboration.find({collaboratorId: collaboratiorId});
+  setCollaborationStatus: async function(collaborationId, status) {
+    const collaboration = await Collaboration.findById(collaborationId);
 
-    if (!Array.isArray(collaborations)) {
-      throw Error('There was an error setting the status if this collaboration');
-    } else if (collaborations.length !== 1) {
-      throw Error('Unable to find collaboration')
-    } 
-
-    const collaboration = collaboration.status = status;
+    if (!collaboration) {
+      throw Error('Unable to locate collaboration');
+    }
+    
+    collaboration.status = status;
     return await collaboration.save();
   }
 }

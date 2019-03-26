@@ -73,15 +73,32 @@ router.put('/:checklistId/updateChecklistStatus/:status', (req, res) => {
       res.status(500).send(error)
     })
 })
-// router.put('/updateChecklist', function(req, res) {
-//   const checklist = req.body
-//   if (!checklist._id) {
-//     res.status(406).send("Unable to update checklist")
-//   }
-//   else {
-//     res.send(JSON.stringify(checklistsService.updateChecklist(checklist)));
-//   }
-// })
+
+router.put('/:checklistId/addCollaborator/:collaboratorId', (req, res) => {
+  const checklistId = req.params.checklistId;
+  const collaboratorId = req.params.collaboratorId;
+
+  checklistsService.addChecklistCollaborator(checklistId, collaboratorId)
+    .then(checklist => {
+      res.send(JSON.stringify(checklist))
+    }, error => {
+      res.status(500).send(error);
+    })
+})
+
+// TODO: I don't know if this should be named "removeCollaborator"...
+// we're not deleting a collaborator, just deleting them from this checklist.
+router.put('/:checklistId/deleteCollaborator/:collaboratorId', (req, res) => {
+  const checklistId = req.params.checklistId;
+  const collaboratorId = req.params.collaboratorId;
+
+  checklistsService.deleteChecklistCollaborator(checklistId, collaboratorId)
+    .then(checklist => {
+      res.send(JSON.stringify(checklist))
+    }, error => {
+      res.status(500).send(error);
+    })
+})
 
 router.delete('/:checklistId', function(req, res) {
   const checklistId = req.params.checklistId;
