@@ -50,6 +50,19 @@ router.put('/:checklistId/:itemId/updateName/:name', (req, res) => {
     })
 })
 
+router.put('/:checklistId/:itemId/assignTo/:userId', (req, res) => {
+  const checklistId = req.params.checklistId;
+  const itemId = req.params.itemId;
+  const assignToId = req.params.userId;
+
+  checklistItemsService.updateChecklistItemAssignTo(checklistId, itemId, assignToId)
+    .then(checklist => {
+      res.send(JSON.stringify(checklist));
+    }, error => {
+      res.status(500).send(error);
+    })
+})
+
 /* DELETE */
 router.delete('/:checklistId/:itemId', (req, res) => {
   const checklistId = req.params.checklistId;

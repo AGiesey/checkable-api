@@ -54,6 +54,27 @@ let checklistItemsService = {
     return await checklist.save();
   },
 
+  updateChecklistItemAssignTo: async function(checklistId, itemId, assignToId) {
+    const checklist = await getChecklist(checklistId)
+
+    if (!checklist) {
+      throw Error('Could not find checklist');
+    }
+
+    const item = checklist.items.id(itemId);
+
+    if (!item) {
+      throw Error('Unable to find checklist item');
+    }
+
+    if (!checklist.collaboratorIds.some(objectId => objectId.toString() === assignToId) && assignToId !== checklist.ownerId.toString()) {
+      throw Error('User not listed as checklist collaborator');
+    }
+
+    item.assignToId = assignToId;
+    return await checklist.save();
+  },
+
   deleteChecklistItem: async function(checklistId, itemId) {
     const checklist = await getChecklist(checklistId);
     
