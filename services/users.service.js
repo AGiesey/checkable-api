@@ -47,6 +47,18 @@ let usersService = {
         })
     },
 
+    findById: function(userId) {
+        return User.findById(userId, function(err, user) {
+            if (err) {
+                throw Error(err);
+            }
+            else if(!user) {
+                throw Error('User Not Found')
+            } 
+            return user;
+        })
+    },
+
     getUserLogin: async function(userEmail, password) {
         const user = await User.findOne({ email: userEmail });
 

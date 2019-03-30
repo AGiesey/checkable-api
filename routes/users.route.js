@@ -8,6 +8,16 @@ router.get('/', function(req, res, next) {
   res.send('Get User not implemented.');
 });
 
+router.get('/findById/:userId', function(req, res) {
+  const userId = req.params.userId;
+
+  usersService.findById(userId)
+    .then(user => {
+      res.send(JSON.stringify(user));
+    }, err => {
+      res.status(406).send(err)
+    });
+})
 
 router.get('/findByEmail/:email', function(req, res) {
   var email = req.params.email;

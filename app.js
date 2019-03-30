@@ -36,7 +36,7 @@ app.use('/users', usersRouter);
 app.use('/checklists', checklistsRouter);
 app.use('/checklistItems', checklistItemsRouter);
 app.use('/login', loginRouter);
-app.use('/collaboration', collaborationRouter);
+app.use('/collaborations', collaborationRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
