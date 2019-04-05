@@ -1,5 +1,6 @@
 const Collaboration = require('../models/collaboration.model');
 const User = require('../models/user.model');
+const CollaborationStatus = require('../objects/collaboration-status');
 
 
 let collaborationService = {
@@ -34,7 +35,8 @@ let collaborationService = {
 
     const collaboration = new Collaboration({
       userId: userId,
-      collaboratorId: collaborator.id
+      collaboratorId: collaborator.id,
+      status: CollaborationStatus.PENDING
     })
 
     return await collaboration.save();
