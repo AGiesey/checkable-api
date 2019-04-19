@@ -10,7 +10,8 @@ let checklistItemsService = {
     if (checklist) {
       const newItem = new ChecklistItem({
         name: item.name,
-        status: ChecklistStatus.NOT_STARTED
+        status: ChecklistStatus.NOT_STARTED,
+        assignedToId: item.assignedToId || checklist.ownerId
       })
       checklist.items = checklist.items.concat([newItem])
 
@@ -54,7 +55,7 @@ let checklistItemsService = {
     return await checklist.save();
   },
 
-  updateChecklistItemAssignTo: async function(checklistId, itemId, assignToId) {
+  updateChecklistItemAssignTo: async function(checklistId, itemId, assignedToId) {
     const checklist = await getChecklist(checklistId)
 
     if (!checklist) {
@@ -67,11 +68,11 @@ let checklistItemsService = {
       throw Error('Unable to find checklist item');
     }
 
-    if (!checklist.collaboratorIds.some(objectId => objectId.toString() === assignToId) && assignToId !== checklist.ownerId.toString()) {
+    if (!checklist.collaboratorIds.some(objectId => objectId.toString() === assignedToId) && assignedToId !== checklist.ownerId.toString()) {
       throw Error('User not listed as checklist collaborator');
     }
 
-    item.assignToId = assignToId;
+    item.assignedToId = assignedToId;
     return await checklist.save();
   },
 

@@ -53,9 +53,9 @@ router.put('/:checklistId/:itemId/updateName/:name', (req, res) => {
 router.put('/:checklistId/:itemId/assignTo/:userId', (req, res) => {
   const checklistId = req.params.checklistId;
   const itemId = req.params.itemId;
-  const assignToId = req.params.userId;
+  const assignedToId = req.params.userId;
 
-  checklistItemsService.updateChecklistItemAssignTo(checklistId, itemId, assignToId)
+  checklistItemsService.updateChecklistItemAssignTo(checklistId, itemId, assignedToId)
     .then(checklist => {
       res.send(JSON.stringify(checklist));
     }, error => {

@@ -53,4 +53,13 @@ router.put('/:collaborationId/updateStatus/:status', function(req, res) {
     })
 })
 
+router.delete('/:collaborationId/deleteCollaboration', function(req, res) {
+  const collaborationId = req.params.collaborationId;
+
+  collaborationService.deleteCollaboration(collaborationId)
+    .then(result => {
+      res.send(JSON.stringify(result));
+    })
+})
+
 module.exports = router;

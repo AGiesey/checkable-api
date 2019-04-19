@@ -15,7 +15,7 @@ router.get('/findAllForUser/:userId', function(req, res) {
     res.status(406).send('Missing User ID')
   }
   else {
-    checklistsService.findByUserId(userId)
+    checklistsService.findAllForUserId(userId)
       .then(checklists => {
 
         res.send(JSON.stringify(checklists));

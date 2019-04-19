@@ -27,10 +27,16 @@ let collaborationService = {
       throw Error('User does not exist');
     }
 
-    const existingCollaborations = await Collaboration.find({userId: userId, collaboratorId: collaborator.id})
+    // Test that the collaboration betweeen the two users doesn't exist
+    const existingCollaborations = await Collaboration.find({userId: userId})
+    const userIsCollaboratorArray = await Collaboration.find({collaboratorId: userId})
+    existingCollaborations.push(...userIsCollaboratorArray);
 
-    if (Array.isArray(existingCollaborations) && existingCollaborations.length > 0) {
-      throw Error('Collaboration already exists');
+    // TODO: Test this
+    if (Array.isArray(existingCollaborations) && 
+      existingCollaborations.length > 0 && 
+      existingCollaborations.some(collaboration => collaboration.userId.toString() === collaborator.id || collaboration.collaboratorId.toString() === collaborator.id)) {
+        throw Error('Collaboration already exists');
     }
 
     const collaboration = new Collaboration({
@@ -52,6 +58,15 @@ let collaborationService = {
     
     collaboration.status = status;
     return await collaboration.save();
+  },
+
+  //DELETE
+  deleteCollaboration: async function(collaborationId) {
+    return await Collaboration.findByIdAndDelete(collaborationId, (err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
   }
 }
 

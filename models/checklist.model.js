@@ -9,7 +9,7 @@ const Schema = mongoose.Schema;
 const checklistItemSchema = new Schema({
     name: {type: String, required: true},
     status: {type: ChecklistItemStatus, default: ChecklistItemStatus.NOT_STARTED },
-    assignedTo: {type: Schema.ObjectId, ref: 'User'}
+    assignedToId: {type: Schema.ObjectId, ref: 'User'}
 }, {timestamps: true}); 
 
 const checklistSchema = new Schema({

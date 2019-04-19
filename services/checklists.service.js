@@ -16,6 +16,15 @@ let checklistsService = {
 
     return await checklist.save();
   },
+
+  findAllForUserId: async function(userId) {
+    const myChecklists = await Checklist.find({ ownerId: userId});
+    const checklistsImAssignedTo = await Checklist.find({
+      collaboratorIds: [userId]
+    })
+
+    return myChecklists.concat(checklistsImAssignedTo);
+  },
     
   // READ
   findByUserId: function(userId) {
@@ -66,7 +75,12 @@ let checklistsService = {
       throw Error('Unable to locate checklist');
     }
     
-    const collaboration = await collaborationService.getCollaborationByBoth(checklist.ownerId, collaboratorId);
+    let collaboration = await collaborationService.getCollaborationByBoth(checklist.ownerId, collaboratorId);
+
+    // If it's not there try the only other way. TODO: make this better
+    if (!collaboration) {
+      collaboration = await collaborationService.getCollaborationByBoth(collaboratorId, checklist.ownerId);
+    }
 
     if (!collaboration) { 
       throw Error('No Collaboration with given user')
@@ -98,9 +112,11 @@ let checklistsService = {
 
     checklist.collaboratorIds = checklist.collaboratorIds.filter(objectId => objectId.toString() !== collaboratorId);
 
-    checklist.items
-      .filter(item => item.assignedTo ? item.assignedTo.toString() === collaboratorId : false)
-      .forEach(item => item.assignedTo = undefined);
+    checklist.items.forEach(item => {
+      if(item.assignedToId && item.assignedToId.toString() === collaboratorId) {
+        item.assignedToId = checklist.ownerId;
+      }
+    })
 
     return await checklist.save()
   },
