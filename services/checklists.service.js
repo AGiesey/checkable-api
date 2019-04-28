@@ -20,7 +20,7 @@ let checklistsService = {
   findAllForUserId: async function(userId) {
     const myChecklists = await Checklist.find({ ownerId: userId});
     const checklistsImAssignedTo = await Checklist.find({
-      collaboratorIds: [userId]
+      collaboratorIds: userId
     })
 
     return myChecklists.concat(checklistsImAssignedTo);
